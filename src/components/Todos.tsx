@@ -34,6 +34,16 @@ const REMOVE_TODO_MUTATION = gql`
     }
 `;
 
+const FINISH_TODO_MUTATION = gql`
+    mutation FinishTODO($id: Int!, $listId: Int!) {
+        finishTODO(id: $id, listId: $listId) {
+            id
+            desc
+            finished
+        }
+    }
+`;
+
 export const Todos = ({ list = [], listId }: TodosProps) => {
   const [todos, setTodos] = useState<Todo[]>(list);
 
@@ -56,7 +66,14 @@ export const Todos = ({ list = [], listId }: TodosProps) => {
   };
 
   const onFinishHandler = (id: number) => {
-    console.log(`Mark todo ${id} as finished`);
+    client.request<{ finishTODO: Todo }>(FINISH_TODO_MUTATION, {
+      id,
+      listId,
+    }).then((data) => {
+      setTodos((prev) =>
+        prev.map((item) => (item.id === id ? data.finishTODO : item)),
+      );
+    });
   };
 
   return (
