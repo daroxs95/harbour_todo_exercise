@@ -1,0 +1,3 @@
+[submodule "lib/next-view-transitions"]
+	path = lib/next-view-transitions
+	url = https://github.com/daroxs95/next-view-transitions
