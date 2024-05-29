@@ -38,14 +38,34 @@
     }
 }
 
-::view-transition-old(root){
-    animation: swipe-left-out;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
+main {
+    view-transition-name: base-reverse;
 }
 
-::view-transition-new(root) {
+main.home {
+    view-transition-name: base;
+}
+
+::view-transition-image-pair(root) {
+    isolation: isolate;
+}
+
+::view-transition-old(base) {
+    animation: swipe-left-out;
+    animation-duration: 0.5s;
+}
+
+::view-transition-new(base) {
+    animation: swipe-right;
+    animation-duration: 0.5s;
+}
+
+::view-transition-old(base-reverse) {
+    animation: swipe-right-out;
+    animation-duration: 0.5s;
+}
+
+::view-transition-new(base-reverse) {
     animation: swipe-left;
     animation-duration: 0.5s;
-    animation-fill-mode: forwards;
 }
