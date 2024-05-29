@@ -1,0 +1,2 @@
+schema: https://harbour-movies.vercel.app/api/graphql
+documents: 'src/**/*.{graphql,ts,tsx}'
