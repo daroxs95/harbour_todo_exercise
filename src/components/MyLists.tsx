@@ -1,6 +1,6 @@
 'use client';
 
-import { Link } from '@lib/next-view-transitions/src/index';
+import { Link } from 'next-view-transitions';
 import classNames from 'classnames';
 import { CreateList } from '@/components/CreateList';
 import { randomColor } from '@/utils/randomColor';
@@ -21,9 +21,9 @@ type MyListsProps = {
 };
 
 const DELETE_LIST_MUTATION = gql`
-    mutation DeleteList($id: Int!) {
-        deleteList(id: $id)
-    }
+  mutation DeleteList($id: Int!) {
+    deleteTODOList(id: $id)
+  }
 `;
 
 export const MyLists = ({ list = [] }: MyListsProps) => {
@@ -34,16 +34,20 @@ export const MyLists = ({ list = [] }: MyListsProps) => {
   };
 
   const onDeletedHandler = (id: number) => {
-    client.request(DELETE_LIST_MUTATION, {
-      id: id,
-    }).then(() => {
-      setTodoLists(todoLists.filter((item) => item.id !== id));
-    });
+    client
+      .request(DELETE_LIST_MUTATION, {
+        id: id,
+      })
+      .then(() => {
+        setTodoLists(todoLists.filter((item) => item.id !== id));
+      });
   };
 
   return (
     <div className="flex flex-col gap-8 text-center">
-      <h1 className="text-4xl">{todoLists.length > 0 ? 'My TODO lists' : 'No lists yet!'}</h1>
+      <h1 className="text-4xl">
+        {todoLists.length > 0 ? 'My TODO lists' : 'No lists yet!'}
+      </h1>
       <ul>
         {todoLists.map((item) => (
           <li key={item.id}>
@@ -59,8 +63,9 @@ export const MyLists = ({ list = [] }: MyListsProps) => {
                 <button
                   className="btn btn-square btn-error"
                   onClick={(e) => {
-                    e.preventDefault();
                     onDeletedHandler(item.id);
+                    e.preventDefault();
+                    e.stopPropagation();
                   }}
                 >
                   <Close />

@@ -6,9 +6,9 @@ import { Close } from '@/components/icons/Close';
 import { AddTodo } from '@/components/AddTodo';
 import { gql } from 'graphql-request';
 import { client } from '@/lib/client';
-import { Reorder } from "framer-motion";
+import { Reorder } from 'framer-motion';
 import { ArrowLeft } from '@/components/icons/ArrowLeft';
-import { Link } from '@lib/next-view-transitions/src/index';
+import { Link } from 'next-view-transitions';
 
 export type Todo = {
   id: number;
@@ -22,68 +22,79 @@ type TodosProps = {
 };
 
 const ADD_TODO_MUTATION = gql`
-    mutation AddTODO($listId: Int!, $desc: String!) {
-        addTODO(listId: $listId, desc: $desc) {
-            id
-            desc
-            finished
-        }
+  mutation AddTODO($listId: Int!, $desc: String!) {
+    addTODO(listId: $listId, desc: $desc) {
+      id
+      desc
+      finished
     }
+  }
 `;
 
 const REMOVE_TODO_MUTATION = gql`
-    mutation RemoveTODO($id: Int!, $listId: Int!) {
-        removeTODO(id: $id, listId: $listId)
-    }
+  mutation RemoveTODO($id: Int!, $listId: Int!) {
+    removeTODO(id: $id, listId: $listId)
+  }
 `;
 
 const FINISH_TODO_MUTATION = gql`
-    mutation FinishTODO($id: Int!, $listId: Int!) {
-        finishTODO(id: $id, listId: $listId) {
-            id
-            desc
-            finished
-        }
+  mutation FinishTODO($id: Int!, $listId: Int!) {
+    finishTODO(id: $id, listId: $listId) {
+      id
+      desc
+      finished
     }
+  }
 `;
 
 export const Todos = ({ list = [], listId }: TodosProps) => {
   const [todos, setTodos] = useState<Todo[]>(list);
 
   const onAddHandler = (desc: string) => {
-    client.request<{ addTODO: Todo }>(ADD_TODO_MUTATION, {
-      listId,
-      desc,
-    }).then((data) => {
-      setTodos((prev) => [...prev, data.addTODO]);
-    });
+    client
+      .request<{ addTODO: Todo }>(ADD_TODO_MUTATION, {
+        listId,
+        desc,
+      })
+      .then((data) => {
+        setTodos((prev) => [...prev, data.addTODO]);
+      });
   };
 
   const onRemoveHandler = (id: number) => {
-    client.request(REMOVE_TODO_MUTATION, {
-      id,
-      listId,
-    }).then(() => {
-      setTodos((prev) => prev.filter((item) => item.id !== id));
-    });
+    client
+      .request(REMOVE_TODO_MUTATION, {
+        id,
+        listId,
+      })
+      .then(() => {
+        setTodos((prev) => prev.filter((item) => item.id !== id));
+      });
   };
 
   const onFinishHandler = (id: number) => {
-    client.request<{ finishTODO: Todo }>(FINISH_TODO_MUTATION, {
-      id,
-      listId,
-    }).then((data) => {
-      setTodos((prev) =>
-        prev.map((item) => (item.id === id ? data.finishTODO : item)),
-      );
-    });
+    client
+      .request<{ finishTODO: Todo }>(FINISH_TODO_MUTATION, {
+        id,
+        listId,
+      })
+      .then((data) => {
+        setTodos((prev) =>
+          prev.map((item) => (item.id === id ? data.finishTODO : item)),
+        );
+      });
   };
 
   return (
     <div>
-      <Link href="/" className="btn btn-primary"><ArrowLeft /></Link>
+      <Link href="/" className="btn btn-primary">
+        <ArrowLeft />
+      </Link>
       <h2 className="text-center text-5xl mb-10">My TODO list</h2>
-      <Reorder.Group values={todos} onReorder={newOrder => setTodos(newOrder as Todo[])}>
+      <Reorder.Group
+        values={todos}
+        onReorder={(newOrder) => setTodos(newOrder as Todo[])}
+      >
         {todos.map((item) => (
           <Reorder.Item
             key={item.id}

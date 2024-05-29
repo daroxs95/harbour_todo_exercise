@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { ViewTransitions } from '@lib/next-view-transitions/src/index';
+import { ViewTransitions } from 'next-view-transitions';
 import './globals.css';
 
 export const metadata: Metadata = {
