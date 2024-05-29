@@ -25,8 +25,16 @@ Note: Remember to update state after mutation
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+Either clone repo with:
+```bash
+git clone --recurse-submodules <repository-url>
+```
+Or run:
+```bash
+git submodule update --init --recursive
+```
 
-First, run the development server:
+Then install dependencies and run the development server:
 
 ```bash
 npm run dev
