@@ -21,8 +21,16 @@ type TodosProps = {
 const ADD_TODO_MUTATION = gql`
     mutation AddTODO($listId: Int!, $desc: String!) {
         addTODO(listId: $listId, desc: $desc) {
+            id
             desc
+            finished
         }
+    }
+`;
+
+const REMOVE_TODO_MUTATION = gql`
+    mutation RemoveTODO($id: Int!, $listId: Int!) {
+        removeTODO(id: $id, listId: $listId)
     }
 `;
 
@@ -30,14 +38,21 @@ export const Todos = ({ list = [], listId }: TodosProps) => {
   const [todos, setTodos] = useState<Todo[]>(list);
 
   const onAddHandler = (desc: string) => {
-    return client.request(ADD_TODO_MUTATION, {
+    client.request<{ addTODO: Todo }>(ADD_TODO_MUTATION, {
       listId,
       desc,
+    }).then((data) => {
+      setTodos((prev) => [...prev, data.addTODO]);
     });
   };
 
   const onRemoveHandler = (id: number) => {
-    console.log(`Remove todo ${id}`);
+    client.request(REMOVE_TODO_MUTATION, {
+      id,
+      listId,
+    }).then(() => {
+      setTodos((prev) => prev.filter((item) => item.id !== id));
+    });
   };
 
   const onFinishHandler = (id: number) => {
