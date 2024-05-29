@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes swipe-left-out {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes swipe-left {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes swipe-right-out {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes swipe-right {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+::view-transition-old(root){
+    animation: swipe-left-out;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+::view-transition-new(root) {
+    animation: swipe-left;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}

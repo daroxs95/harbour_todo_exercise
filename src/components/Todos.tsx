@@ -1,12 +1,14 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Heart } from '@/components/icons/Heart';
 import { Close } from '@/components/icons/Close';
 import { AddTodo } from '@/components/AddTodo';
 import { gql } from 'graphql-request';
 import { client } from '@/lib/client';
-import { motion, Reorder } from "framer-motion";
+import { Reorder } from "framer-motion";
+import { ArrowLeft } from '@/components/icons/ArrowLeft';
+import { Link } from '@lib/next-view-transitions/src/index';
 
 export type Todo = {
   id: number;
@@ -79,6 +81,7 @@ export const Todos = ({ list = [], listId }: TodosProps) => {
 
   return (
     <div>
+      <Link href="/" className="btn btn-primary"><ArrowLeft /></Link>
       <h2 className="text-center text-5xl mb-10">My TODO list</h2>
       <Reorder.Group values={todos} onReorder={newOrder => setTodos(newOrder as Todo[])}>
         {todos.map((item) => (

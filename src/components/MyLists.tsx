@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@lib/next-view-transitions/src/index';
 import classNames from 'classnames';
 import { CreateList } from '@/components/CreateList';
 import { randomColor } from '@/utils/randomColor';
